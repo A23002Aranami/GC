@@ -44,6 +44,7 @@ public:
 	void SetVec(VECTOR3 vec) { speed = vec; }
 	VECTOR3 GetVec() { return speed; }
 
+
 	//吹っ飛び率のセッターゲッター
 	void AddKBR(float KBR) { KnockBackRate += KBR; }//吹っ飛び率加算
 	float GetKBR() { return KnockBackRate; }
@@ -62,6 +63,12 @@ public:
 	int GetDangerTime() { return dangerTime; }
 
 	int plNo;//プレイヤー番号
+
+	enum State {
+		sOnGround = 0,
+		sJump,
+		sStop,
+	};
 
 private:
 
@@ -94,11 +101,7 @@ private:
 
 
 	int number;
-	enum State {
-		sOnGround = 0,
-		sJump,
-		sStop,
-	};
+	
 	State state;
 	void UpdateOnGround();
 	void UpdateJump();

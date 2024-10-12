@@ -11,7 +11,7 @@
 #include "MochiTest.h"
 #include "Map.h"
 #include "PlayerManager.h"
-
+#include "Skybox.h"
 PlayScene::PlayScene()
 {
 	CsvReader* csv = new CsvReader("Data/config.csv");
@@ -47,6 +47,13 @@ PlayScene::PlayScene()
 			}
 			else if (str == "GROUND") {//GROUND‚Ì”’l“ü—Í
 				obj = Instantiate<Ground>();
+			}
+			else if (str == "SKYBOX")
+			{
+				SkyBox* sky = Instantiate<SkyBox>();
+				sky->LoadMesh(csv->GetString(i,4));
+
+				obj = sky;
 			}
 			else//•¶š—ñƒ~ƒX‚Ì
 			{
