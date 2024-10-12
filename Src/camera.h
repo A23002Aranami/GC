@@ -10,9 +10,11 @@ public:
 
 	void Update() override;
 	void Draw() override;
+	MATRIX4X4 Matrix() { return transform.matrix(); }
+
 private:
 	VECTOR3 lookPosition;
-
+	
 	float distance;//‚QƒLƒƒƒ‰‚Ì‹——£
 	VECTOR3 Look;
 	VECTOR3 CamPos;

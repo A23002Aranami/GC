@@ -14,6 +14,7 @@
 #include "Skybox.h"
 PlayScene::PlayScene()
 {
+	Instantiate<Map>();
 	CsvReader* csv = new CsvReader("Data/config.csv");
 
 	assert(csv->GetLines() > 0);//値が入っていない場合エラーにするための処理
@@ -82,7 +83,7 @@ PlayScene::PlayScene()
 		}
 	}
 
-	Instantiate<Map>();
+	
 	new PlayerManager(players);//プレイヤーマネージャー実体化
 }
 
@@ -92,15 +93,7 @@ PlayScene::~PlayScene()
 
 void PlayScene::Update()
 {
-	//
-	////Playerが残り一人になったらゲーム終了
-	//std::list< Player* > pls = ObjectManager::FindGameObjects<Player>();
-	//if (pls.size() <= 1) {
-	//	Score* sc = ObjectManager::FindGameObject<Score>();
-	//	Player* pl = ObjectManager::FindGameObject<Player>();
-	//	sc->SetWinner( pl->plNo);
-	//	SceneManager::ChangeScene("ResultScene");
-	//}
+	
 }
 
 void PlayScene::Draw()

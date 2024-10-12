@@ -1,7 +1,6 @@
 #include "Player.h"
 //#include "../Libs/Imgui/imgui.h"
-#include "Dancer.h"
-#include "Door.h"
+
 #include "PlayerManager.h"
 
 namespace { // このcpp以外では使えない
@@ -99,23 +98,43 @@ void Player::Update()
 
 void Player::Draw()
 {
+	//Object3D::Draw();//継承元の関数を呼ぶ
+	colMesh->Render(transform.matrix());
+
 	char str[64];//文字列
 	sprintf_s<64>(str, "%dP Y: %f", plNo, transform.position.y);//printfの形で文字列に入れてくれる
 
-	GameDevice()->m_pFont->Draw(
-		500, plNo * 50 + 50, str, 32, RGB(255, 255, 255));
+	VECTOR3 disPos = XMVector3Project(
+		transform.position + VECTOR3(-0.25f, 2.0f, 0), 0, 0,
+		WINDOW_WIDTH, WINDOW_HEIGHT, 0.0f, 1.0f,
+		GameDevice()->m_mProj, GameDevice()->m_mView, XMMatrixIdentity()
+	);
 
-	sprintf_s<64>(str, "%3.2f%%", (KnockBackRate - defKBR) / (2.0f - defKBR));
-	GameDevice()->m_pFont->Draw(800, plNo * 50 + 50, str, 32, RGB(255, 255, 255));
+	sprintf_s<64>(str, "%dP", plNo);
+	GameDevice()->m_pFont->Draw(disPos.x+2, disPos.y+2, str, 32, RGB(150, 150, 150));
 
-	//Object3D::Draw();//継承元の関数を呼ぶ
-	colMesh->Render(transform.matrix());
+	sprintf_s<64>(str, "%dP",plNo);
+	GameDevice()->m_pFont->Draw(disPos.x, disPos.y , str, 32, RGB(255, 255, 255));
+
+
+	
 	CSprite spr;
 
 	VECTOR3 Dir = XMVector3Normalize(CalcMoveVec(VECTOR3(0, 1, 0)));
 	spr.DrawLine3D(transform.position, VECTOR3(transform.position.x, DeadLine, transform.position.z), RGB(160, 130, 130), 0.9f);
 	spr.DrawLine3D(transform.position
 		, transform.position + VECTOR3(Dir.x * 10, 0, Dir.z * 10), RGB(130, 160, 130), 0.9f);
+
+	spr.DrawRect(plNo * 500 - 25 - 250, 600 - 2 , 300, 100,RGB(100,100,100),0.6f);
+	GameDevice()->m_pFont->Draw(
+		plNo * 500-250, 550, str, 32, RGB(255, 255, 255));
+
+	sprintf_s<64>(str, "%3.0f%%", (KnockBackRate - defKBR) / (2.0f - defKBR) * 100);
+	GameDevice()->m_pFont->Draw(plNo * 500+5-250, 600+5, str, 100, RGB(255, 150, 100));
+
+	sprintf_s<64>(str, "%3.0f%%", (KnockBackRate - defKBR) / (2.0f - defKBR) * 100);
+	GameDevice()->m_pFont->Draw(plNo * 500-250, 600, str, 100, RGB(255, 255, 255));
+
 
 }
 
@@ -377,7 +396,7 @@ void Player::UpdateJump()
 
 		if (ThrouthCheckStoM(obj, coll, &push, speed, 10))//判定処理細分化
 		{
-			transform.position += push;
+			transform.position += push*2;
 			airJump = 0;
 			state = sOnGround;//ステートを地面判定にする
 
@@ -386,7 +405,7 @@ void Player::UpdateJump()
 #endif
 
 		//ステージ端で滑らかに落ちてすり抜けないようにするための処理
-		radius = 0.5f;
+		radius = 0.8f;
 		SphereCollider bodyColl(transform.position + VECTOR3(0, radius + 0.2f, 0), radius);
 
 
