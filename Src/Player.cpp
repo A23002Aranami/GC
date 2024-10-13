@@ -2,6 +2,7 @@
 //#include "../Libs/Imgui/imgui.h"
 
 #include "PlayerManager.h"
+#include "PlayerPointer.h"
 
 namespace { // このcpp以外では使えない
 	static const float Gravity = 0.008f; // 重力加速度(正の値)
@@ -44,6 +45,8 @@ Player::Player()
 	defKBR = 0.7f;
 	KnockBackRate = defKBR;
 	dangerTime = 0;
+
+	new PlayerPointer(this);
 }
 
 Player::~Player()
@@ -120,10 +123,12 @@ void Player::Draw()
 	
 	CSprite spr;
 
+	/*
 	VECTOR3 Dir = XMVector3Normalize(CalcMoveVec(VECTOR3(0, 1, 0)));
 	spr.DrawLine3D(transform.position, VECTOR3(transform.position.x, DeadLine, transform.position.z), RGB(160, 130, 130), 0.9f);
 	spr.DrawLine3D(transform.position
 		, transform.position + VECTOR3(Dir.x * 10, 0, Dir.z * 10), RGB(130, 160, 130), 0.9f);
+	*/
 
 	spr.DrawRect(plNo * 500 - 25 - 250, 600 - 2 , 300, 100,RGB(100,100,100),0.6f);
 	GameDevice()->m_pFont->Draw(

@@ -12,6 +12,7 @@ public:
 		position = VECTOR3(0, 0, 0);
 		rotation = VECTOR3(0, 0, 0);
 		scale = VECTOR3(1, 1, 1);
+		parent = nullptr;
 	}
 	const MATRIX4X4 matrix() {
 		MATRIX4X4 scaleM = XMMatrixScaling(
@@ -25,7 +26,16 @@ public:
 		MATRIX4X4 trans = XMMatrixTranslation(
 			position.x, position.y, position.z);
 		return scaleM * rotZ * rotX * rotY * trans;
+
+
 	}
+
+	
+	//親オブジェクトをセットする
+	void SetParent(Object3D* parent) { this->parent = parent; }
+	Object3D* GetParent() { return parent; }
+private:
+	Object3D* parent;
 };
 
 class SphereCollider {

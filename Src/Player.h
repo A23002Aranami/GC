@@ -118,6 +118,8 @@ private:
 	int changeState;
 	int frame; // アニメーションのフレームを数える
 
+	
+
 
 
 };

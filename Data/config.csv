@@ -1,5 +1,5 @@
 物体,X座標,Y座標,Z座標,,,,,,,,RotY,描画用メッシュ
 //,,,,スカイボックスメッシュ,,,,,,,,
 SKYBOX,4.5,5,4.5,Skybox.mesh,,,,,,,,
-PLAYER,4,5,4,W,S,A,D,None,None,F,45,mochiAlter.mesh
-PLAYER,5,5,5,UP,DOWN,LEFT,RIGHT,None,None,SLASH,225,mochiAlter.mesh
+PLAYER,3,5,3,W,S,A,D,None,None,F,45,mochiAlter.mesh
+PLAYER,6,5,6,UP,DOWN,LEFT,RIGHT,None,None,SLASH,225,mochiAlter.mesh

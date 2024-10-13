@@ -23,8 +23,8 @@ void TitleScene::Update()
 		}
 	}
 	if (GameDevice()->m_pDI->
-			CheckKey(KD_TRG, DIK_P)) {
-		SceneManager::ChangeScene("PlayScene");
+			CheckKey(KD_TRG, DIK_SPACE)) {
+		SceneManager::ChangeScene("MenuScene");
 	}
 }
 
@@ -33,5 +33,5 @@ void TitleScene::Draw()
 	GameDevice()->m_pFont->Draw(
 		500, 200, "HOPPING", 100, RGB(255, 255, 255));
 	GameDevice()->m_pFont->Draw(
-		300, 400, "PUSH P TO PLAY", 100, RGB(255, 255, 255));
+		200, 400, "PUSH SPACE TO PLAY", 100, RGB(255, 255, 255));
 }
