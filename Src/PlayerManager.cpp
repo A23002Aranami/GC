@@ -24,11 +24,28 @@ PlayerManager::~PlayerManager()
 {
 }
 
+void PlayerManager::Update()
+{
+	positiveSum = 0;
+	positive1p = ObjectManager::FindGameObject<Player>()->GetPositiveTime();
+	for (auto pl : pls)
+	{
+		positiveSum += pl->GetPositiveTime();
+	}
+}
+
 void PlayerManager::Draw()
 {
 	if (timer < startTime) {//ƒQ[ƒ€‚ªŽn‚Ü‚é‚Ü‚Å
 		Ready();
 	}
+
+	CSprite spr;
+	float gaugeMax = 800;
+	float rate = positive1p / positiveSum;
+	spr.DrawRect(275, 20, gaugeMax + 50, 30, RGB(100, 100, 100));
+	spr.DrawRect(300, 25, gaugeMax * rate, 20, RGB(255, 100, 100));
+	spr.DrawRect(300 + gaugeMax * rate, 25, gaugeMax * (1 - rate)+1, 20, RGB(100, 100, 255));
 }
 
 void PlayerManager::ReduceSurvivor( int plNo )
@@ -60,5 +77,7 @@ void PlayerManager::Ready()
 	sprintf_s<64>(str, "%d", (startTime - timer) / sec + 1);
 	GameDevice()->m_pFont->Draw(
 		600, 250, str, 300, RGB(255, 255, 255));
+
+	
 }
 

@@ -40,6 +40,8 @@ public:
 	void LoadColMesh(std::string meshName);
 	SphereCollider Collider() override;
 
+	float GetPositiveTime() { return positiveTime; }
+
 	//移動ベクトルのセッター・ゲッター
 	void SetVec(VECTOR3 vec) { speed = vec; }
 	VECTOR3 GetVec() { return speed; }
@@ -101,6 +103,8 @@ private:
 
 
 	int number;
+
+	float positiveTime;//積極的に動いた時間
 	
 	State state;
 	void UpdateOnGround();
@@ -117,6 +121,7 @@ private:
 	int wait;
 	int changeState;
 	int frame; // アニメーションのフレームを数える
+	bool positive;
 
 	
 

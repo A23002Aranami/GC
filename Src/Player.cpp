@@ -12,7 +12,12 @@ namespace { // このcpp以外では使えない
 	static const float DeadLine = -7.0f;//死亡する高さ
 	static const float MoveSpeed = 0.1f;
 	static const int MAX_AIRJUMP = 1;
-
+	static const DWORD color[] =
+	{
+		RGB(0,0,0),
+		RGB(255,100,100),
+		RGB(100,100,255)
+	};
 	static const float MAX_ROTATION = 50.0f / 180.0f * XM_PI;
 
 };
@@ -45,6 +50,9 @@ Player::Player()
 	defKBR = 0.7f;
 	KnockBackRate = defKBR;
 	dangerTime = 0;
+	positiveTime = 0;
+
+	positive = false;
 
 	new PlayerPointer(this);
 }
@@ -117,7 +125,7 @@ void Player::Draw()
 	GameDevice()->m_pFont->Draw(disPos.x+2, disPos.y+2, str, 32, RGB(150, 150, 150));
 
 	sprintf_s<64>(str, "%dP",plNo);
-	GameDevice()->m_pFont->Draw(disPos.x, disPos.y , str, 32, RGB(255, 255, 255));
+	GameDevice()->m_pFont->Draw(disPos.x, disPos.y , str, 32, color[plNo]);
 
 
 	
@@ -132,7 +140,13 @@ void Player::Draw()
 
 	spr.DrawRect(plNo * 500 - 25 - 250, 600 - 2 , 300, 100,RGB(100,100,100),0.6f);
 	GameDevice()->m_pFont->Draw(
-		plNo * 500-250, 550, str, 32, RGB(255, 255, 255));
+		plNo * 500-250, 550, str, 32, color[plNo]);
+
+	if(positive){
+	GameDevice()->m_pFont->Draw(
+		plNo * 500 - 200, 550, "POSITIVE", 32, RGB(255, 150, 100));
+
+	}
 
 	sprintf_s<64>(str, "%3.0f%%", (KnockBackRate - defKBR) / (2.0f - defKBR) * 100);
 	GameDevice()->m_pFont->Draw(plNo * 500+5-250, 600+5, str, 100, RGB(255, 150, 100));
@@ -260,11 +274,11 @@ void Player::KnockBack(Player* atacker, Player* difender)
 	float roteD = fabs(difender->Rotation().x);
 
 	if (roteA > roteD) {//攻撃側の方が傾いている場合
-		difender->AddKBR(0.4f);//相手の吹っ飛び率を増やす
+		difender->AddKBR(0.3f);//相手の吹っ飛び率を増やす
 	}
 	else if (roteA == roteD)//攻撃側と受け側の傾きが同じ場合
 	{
-		difender->AddKBR(0.3f);//相手の吹っ飛び率を増やす
+		difender->AddKBR(0.2f);//相手の吹っ飛び率を増やす
 	}
 	else//受け側の方が傾いている場合
 	{
@@ -350,8 +364,18 @@ void Player::UpdateJump()
 
 	Input();
 
+	int maxAirJump;
+
+	if (positive)
+	{
+		maxAirJump = 2;
+	}
+	else
+	{
+		maxAirJump = 1;
+	}
 	//空中ジャンプ
-	if (DI->CheckKey(KD_TRG, inputJump) && airJump < MAX_AIRJUMP) {//ジャンプボタン
+	if (DI->CheckKey(KD_TRG, inputJump) && airJump < maxAirJump ) {//ジャンプボタン
 
 		VECTOR3 forward = VECTOR3(0, JumpPower, 0); // 回転してない時の移動量
 		speed = CalcMoveVec(forward); // キャラの向いてる方への移動量
@@ -379,19 +403,7 @@ void Player::UpdateJump()
 
 	for (auto obj : objs)
 	{
-		/*
-		//地面とホッピングの判定処理
-		VECTOR3 hit;
-		if (obj->HitLineToMesh(begin, end, &hit))
-		{
-			transform.position = hit + VECTOR3(0,0.01f,0);
-			airJump = 0;
-			state = sOnGround;
-		}
-
-		*/
-
-
+		
 #if 1
 		//地面とホッピングの判定処理
 		float radius = 0.35f;//スフィアが小さすぎると判定でエラーが起きてしまうので注意
@@ -401,7 +413,7 @@ void Player::UpdateJump()
 
 		if (ThrouthCheckStoM(obj, coll, &push, speed, 10))//判定処理細分化
 		{
-			transform.position += push*2;
+			transform.position += push*3;
 			airJump = 0;
 			state = sOnGround;//ステートを地面判定にする
 
@@ -431,7 +443,20 @@ void Player::UpdateJump()
 	{
 		if (pl->plNo != this->plNo)
 		{
+			if (fabs(transform.rotation.x) > fabs(pl->Rotation().x))
+			{
+				positiveTime++;
+			}
 
+			if (positiveTime > pl->GetPositiveTime())
+			{
+				positive = true;
+			}
+			else
+			{
+				positive = false;
+			}
+			
 			float radius = 0.5f;
 			SphereCollider coll(transform.position + VECTOR3(0, radius + 0.2f, 0), radius);
 			VECTOR3 push;

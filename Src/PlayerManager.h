@@ -10,6 +10,7 @@ public:
 	PlayerManager(int num);//ƒvƒŒƒCƒ„[”‚ğˆø”‚É‚·‚é
 	~PlayerManager();
 
+	void Update()override;
 	void Draw()override;
 
 	void ReduceSurvivor( int plNo );
@@ -22,4 +23,6 @@ private:
 	int timer;
 	float rate;
 	float scale;
+	float positiveSum;
+	float positive1p;
 };

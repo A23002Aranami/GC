@@ -86,6 +86,17 @@ void MenuScene::Update()
 		for (int i = 0; i < 3; i++)
 		{
 			menu[i]->position = (menu[i]->positionE - menu[i]->positionB) * rate + menu[i]->positionB;
+			
+			if (select == i)
+			{
+				menu[i]->scale = 1.5f;
+				menu[i]->color = RGB(255, 255, 255);
+			}
+			else
+			{
+				menu[i]->scale = 1.0f;
+				menu[i]->color = RGB(200, 170, 255);
+			}
 		}
 	}
 	else
