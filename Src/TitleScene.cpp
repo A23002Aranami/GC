@@ -3,6 +3,8 @@
 
 TitleScene::TitleScene()
 {
+	LogoImage = new CSpriteImage(GameDevice()->m_pShader,"Data/Image/TITLE.png");
+	spr = new CSprite();
 	positionX = 0;
 	speedX = 1;
 }
@@ -30,8 +32,13 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
+
+	int x = LogoImage->m_dwImageWidth;
+	int y = LogoImage->m_dwImageHeight;
+
+
 	GameDevice()->m_pFont->Draw(
-		500, 200, "HOPPING", 100, RGB(255, 255, 255));
-	GameDevice()->m_pFont->Draw(
-		200, 400, "PUSH SPACE TO PLAY", 100, RGB(255, 255, 255));
+		380, 550, "PUSH SPACE TO PLAY", 64, RGB(255, 255, 255));
+
+	spr->Draw(LogoImage,200,0,0,0,x,y);
 }

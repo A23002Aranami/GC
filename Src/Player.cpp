@@ -3,6 +3,7 @@
 
 #include "PlayerManager.h"
 #include "PlayerPointer.h"
+#include "Smoke.h"
 
 namespace { // このcpp以外では使えない
 	static const float Gravity = 0.008f; // 重力加速度(正の値)
@@ -346,6 +347,8 @@ void Player::UpdateOnGround()
 		//ジャンプのタイマーリセット
 		Timer = 0;
 		state = sJump;
+
+		new Smoke(20, this, VECTOR3(0,0,0));
 	}
 
 
@@ -382,6 +385,8 @@ void Player::UpdateJump()
 		//speed.y = vec.y;
 
 		airJump++;
+
+		new Smoke( 20,this,transform.rotation );
 	}
 
 	//線分で地面との判定をするため

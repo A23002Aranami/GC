@@ -11,4 +11,6 @@ public:
 private: // クラスのメンバー変数はprivateにする
 	int positionX;
 	int speedX;
+	CSpriteImage* LogoImage;
+	CSprite* spr;
 };
