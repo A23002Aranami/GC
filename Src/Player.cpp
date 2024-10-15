@@ -293,6 +293,7 @@ void Player::KnockBack(Player* atacker, Player* difender)
 void Player::Input()
 {
 	CDirectInput* DI = GameDevice()->m_pDI;
+	
 
 	if (DI->CheckKey(KD_DAT, inputForward)
 		&& transform.rotation.x <= MAX_ROTATION) {//前ボタン
@@ -406,6 +407,8 @@ void Player::UpdateJump()
 	//指定されたタグのオブジェクトを探索する
 	std::list<Object3D*> objs = ObjectManager::FindGameObjectsWithTag<Object3D>("STAGEOBJ");
 
+	VECTOR3 pushSum = VECTOR3(0,0,0);
+
 	for (auto obj : objs)
 	{
 		
@@ -414,20 +417,19 @@ void Player::UpdateJump()
 		float radius = 0.35f;//スフィアが小さすぎると判定でエラーが起きてしまうので注意
 		SphereCollider coll(transform.position + VECTOR3(0, radius, 0), radius);
 
+		
+
 		VECTOR3 push;
+		
+		
+		
+		
 
-		if (ThrouthCheckStoM(obj, coll, &push, speed, 10))//判定処理細分化
-		{
-			transform.position += push*3;
-			airJump = 0;
-			state = sOnGround;//ステートを地面判定にする
-
-		}
 
 #endif
 
 		//ステージ端で滑らかに落ちてすり抜けないようにするための処理
-		radius = 0.8f;
+		radius = 0.7f;
 		SphereCollider bodyColl(transform.position + VECTOR3(0, radius + 0.2f, 0), radius);
 
 
@@ -436,9 +438,23 @@ void Player::UpdateJump()
 			//当たった時に反発する距離を食い込んだ二倍の量に
 			transform.position += push * 2;
 			speed.y = 0.0f;
+			airJump = 0.0f;
+		}
+		else
+		{
+			if (ThrouthCheckStoM(obj, coll, &push, speed, 10))//判定処理細分化
+			{
+				pushSum += push;
+				airJump = 0;
+				state = sOnGround;//ステートを地面判定にする
+
+			}
 		}
 
 	}
+
+	
+	transform.position += pushSum*2;
 
 
 	//プレイヤー同士の接触判定
@@ -470,7 +486,6 @@ void Player::UpdateJump()
 
 			VECTOR3 length = transform.position - pl->Position();
 
-			//if (ThrouthCheckStoM(pl, coll, &push, speed, 1000))
 			if (length.Length() < (radius * 2))
 			{
 				//ヒットストップ

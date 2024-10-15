@@ -19,6 +19,11 @@ MenuScene::MenuScene()
 	
 	changeTime = 20;
 	timer = changeTime;
+
+	back = new CSpriteImage( GameDevice()->m_pShader,"Data/Image/MenuBack.png");
+	image = new CSpriteImage( GameDevice()->m_pShader,"Data/Image/Menu.png");
+
+	spr = new CSprite();
 }
 
 void MenuScene::Update()
@@ -89,13 +94,13 @@ void MenuScene::Update()
 			
 			if (select == i)
 			{
-				menu[i]->scale = 1.5f;
-				menu[i]->color = RGB(255, 255, 255);
+				menu[i]->scale = 1.2f;
+				menu[i]->color = RGB(140, 100, 200);
 			}
 			else
 			{
 				menu[i]->scale = 1.0f;
-				menu[i]->color = RGB(200, 170, 255);
+				menu[i]->color = RGB(195,195,255);
 			}
 		}
 	}
@@ -105,13 +110,13 @@ void MenuScene::Update()
 		{
 			if (select == i)
 			{
-				menu[i]->scale = 1.5f;
-				menu[i]->color = RGB(255, 255, 255);
+				menu[i]->scale = 1.2f;
+				menu[i]->color = RGB(140, 100, 200);
 			}
 			else
 			{
 				menu[i]->scale = 1.0f;
-				menu[i]->color = RGB(200, 170, 255);
+				menu[i]->color = RGB(195, 195, 255);
 			}
 			menu[i]->position = menu[i]->positionE;
 		}
@@ -120,17 +125,15 @@ void MenuScene::Update()
 
 void MenuScene::Draw()
 {
+	spr->Draw(back, 0, 0, 0, 0, back->m_dwImageWidth, back->m_dwImageHeight);
+
 	for (int i = 0; i<3; i++) {
 		
-		GameDevice()->m_pFont->Draw(
-			menu[i]->position.x, menu[i]->position.y, menu[i]->name.c_str(), 150*menu[i]->scale, menu[i]->color);
-	}
+		spr->Draw(image, menu[i]->position.x-10, menu[i]->position.y-10,0,0,image->m_dwImageWidth,image->m_dwImageHeight);
 
-	GameDevice()->m_pFont->Draw(
-		100 + 10, 500 + 10, "MENU", 200, RGB(200, 170, 255));
-	
-	GameDevice()->m_pFont->Draw(
-		100, 500, "MENU", 200, RGB(255, 255, 255));
+		GameDevice()->m_pFont->Draw(
+			menu[i]->position.x+180, menu[i]->position.y+40, menu[i]->name.c_str(), 130*menu[i]->scale, menu[i]->color);
+	}
 
 }
 

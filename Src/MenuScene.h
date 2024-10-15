@@ -40,6 +40,10 @@ private:
 		mTitle,
 	};
 
+	CSpriteImage* back;
+	CSpriteImage* image;
+	CSprite* spr;
+
 	Menu* menu[3];
 	
 	int select;

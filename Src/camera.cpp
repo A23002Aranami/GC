@@ -140,7 +140,7 @@ void Camera::Update()
 
 
 
-
+	/*
 	//カメラがめり込まないようにする処理
 	VECTOR3 start = player->Position() + VECTOR3(0, 1.5f, 0);
 
@@ -161,9 +161,12 @@ void Camera::Update()
 		}
 
 	}
+	
+
 	//(end-start).Length() = 壁とキャラの頭の距離
 	//カメラの位置変更(壁からPLの頭までの距離を求めて、距離から0.2を引いたのを求めて、始点をスタートに合わせる)
 	transform.position = XMVector3Normalize(push) * ((end - start).Length() - 0.2f) + start;
+	*/
 }
 
 void Camera::Draw()

@@ -7,6 +7,7 @@ public:
 	Smoke(int time,Object3D* parent, VECTOR3 rotation);
 
 	void Update()override;
+	void Draw()override;
 private:
 	int timer;
 	int disTime;//•\¦ŠÔãŒÀ
